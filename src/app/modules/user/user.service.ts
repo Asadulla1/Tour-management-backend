@@ -1,11 +1,24 @@
-import { IUser } from "./user.interface";
+import { IAuthProvider, IUser } from "./user.interface";
 import { User } from "./user.model";
-
+import { hash } from "bcrypt-ts";
 const createUserService = async (payload: Partial<IUser>) => {
-  const { name, email } = payload;
+  const { email, password, ...rest } = payload;
+  const isUserExist = await User.findOne({ email });
+  if (isUserExist) {
+    throw new Error("User Already Exist");
+  }
+
+  // hashing the password
+  const hashedPassword = await hash(password as string, 10);
+  const authProvider: IAuthProvider = {
+    provider: "credentials",
+    providerId: email as string,
+  };
   const user = await User.create({
-    name,
     email,
+    password: hashedPassword,
+    auths: [authProvider],
+    ...rest,
   });
   return user;
 };
