@@ -1,5 +1,5 @@
 import { envVars } from "../app/config";
-import { IAuthProvider, Role } from "../app/modules/user/user.interface";
+import { IAuthProvider, IUser, Role } from "../app/modules/user/user.interface";
 import { User } from "../app/modules/user/user.model";
 import bcrypt from "bcrypt-ts";
 export const seedSuperAdmin = async () => {
@@ -9,7 +9,7 @@ export const seedSuperAdmin = async () => {
     });
 
     if (isSuperAdminExist) {
-      throw new Error("Super Admin Already Exist");
+      console.log("super admin already exist");
     }
     console.log("Trying to create a super Admin");
     const hashedPassword = await bcrypt.hash(
@@ -28,6 +28,8 @@ export const seedSuperAdmin = async () => {
       password: hashedPassword,
       isVerified: true,
       auths: [authProvider],
+      bookings: [],
+      guides: [],
     };
     const superadmin = await User.create(payload);
     console.log("Super Admin Created Successfuly! \n");
