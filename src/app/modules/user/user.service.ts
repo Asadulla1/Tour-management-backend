@@ -1,3 +1,4 @@
+import { envVars } from "../../config";
 import { IAuthProvider, IUser } from "./user.interface";
 import { User } from "./user.model";
 import { hash } from "bcrypt-ts";
@@ -9,7 +10,10 @@ const createUserService = async (payload: Partial<IUser>) => {
   }
 
   // hashing the password
-  const hashedPassword = await hash(password as string, 10);
+  const hashedPassword = await hash(
+    password as string,
+    Number(envVars.bcrypt_salt_round)
+  );
   const authProvider: IAuthProvider = {
     provider: "credentials",
     providerId: email as string,
