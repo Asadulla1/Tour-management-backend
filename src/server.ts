@@ -5,6 +5,7 @@ import { Server } from "http";
 
 import mongoose from "mongoose";
 import app from "./app";
+import { seedSuperAdmin } from "./utils/seedSuperAdmin";
 
 let server: Server;
 
@@ -30,7 +31,10 @@ async function bootstrap() {
  * SigTerm
  */
 
-bootstrap();
+(async () => {
+  await bootstrap();
+  await seedSuperAdmin();
+})();
 
 process.on("unhandledRejection", (error) => {
   console.log("Unhandled Rejection Occured!!!", error);
