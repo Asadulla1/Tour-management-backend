@@ -4,9 +4,6 @@ import { UserServices } from "./user.service";
 import { catchAsync } from "../../../utils/catchAstnc";
 import { HttpStatus } from "http-status-ts";
 import { sendResponse } from "../../../utils/sendResponse";
-import { verifyToken } from "../../../utils/jwt";
-import { envVars } from "../../config";
-import { JwtPayload } from "jsonwebtoken";
 
 // import AppError from "../../errorHelpers/AppError";
 
