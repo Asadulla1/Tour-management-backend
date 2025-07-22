@@ -4,6 +4,7 @@ import { UserServices } from "./user.service";
 import { catchAsync } from "../../../utils/catchAstnc";
 import { HttpStatus } from "http-status-ts";
 import { sendResponse } from "../../../utils/sendResponse";
+import { JwtPayload } from "jsonwebtoken";
 
 // import AppError from "../../errorHelpers/AppError";
 
@@ -44,7 +45,11 @@ const updateUser = catchAsync(
     // const token = req.headers.authorization;
     const verifiedToken = req.user;
     const payload = req.body;
-    const user = await UserServices.UpdateUser(userId, payload, verifiedToken);
+    const user = await UserServices.UpdateUser(
+      userId,
+      payload,
+      verifiedToken as JwtPayload
+    );
     sendResponse(res, {
       success: true,
       statusCode: HttpStatus.OK,
